@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Location Multi Cuisine Restaurant | Premium Dining</title>
+
+  <meta name="description" content="Experience authentic Middle Eastern and South Indian flavors at Location Multi Cuisine Restaurant, Tamil Nadu. Order online, reserve tables, and enjoy premium dining.">
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🍽️%3C/text%3E%3C/svg%3E">
+
+</head>
+
+<body>
+
+  <!-- Loading Screen -->
+
+  <div class="loader" id="loader">
+
+    <div class="extracted-index-0">
+
+      <div class="spinner"></div>
+
+      <p class="extracted-index-1">Location Restaurant</p>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- Navbar -->
+
+  <nav class="navbar" id="navbar">
+
+    <a href="index.html" class="nav-logo">
+
+      <div class="extracted-index-2">🍽️</div>
+
+      <div class="nav-logo-text">
+
+        <span class="brand">Location Restaurant</span>
+
+        <span class="tagline">Middle Eastern &amp; Tamil Cuisine</span>
+
+      </div>
+
+    </a>
+
+    <div class="nav-links" id="navLinks">
+
+      <a href="index.html" class="active">Home</a>
+
+      <a href="#about">About</a>
+
+      <a href="menu.html">Menu</a>
+
+      <a href="reservation.html">Reservation</a>
+
+      <a href="menu.html">Order Online</a>
+
+      <a href="#contact">Contact</a>
+
+    </div>
+
+    <div class="nav-auth" id="navAuth">
+
+      <a href="login.html" class="btn-login" id="loginBtn">Login</a>
+
+      <a href="signup.html" class="btn-signup" id="signupBtn">Sign Up</a>
+
+      <div id="userMenu" class="extracted-index-3">
+
+        <button type="button" onclick="toggleUserDropdown()" class="extracted-index-3">
+
+          <span>👤</span><span id="userName">User</span><span>▾</span>
+
+        </button>
+
+        <div id="userDropdown" class="extracted-index-5">
+
+          <a href="dashboard.html" class="extracted-index-6">📊 Dashboard</a>
+
+          <a href="menu.html" class="extracted-index-7">🛒 My Orders</a>
+
+          <button type="button" onclick="logout()" class="extracted-index-8">🚪 Logout</button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <button type="button" class="hamburger" id="hamburger" onclick="toggleMobile()" aria-label="Toggle menu">
+
+      <span></span><span></span><span></span>
+
+    </button>
+
+  </nav>
+
+
+
+  <!-- Hero -->
+
+  <section class="hero" id="home">
+
+    <div class="hero-bg"></div>
+
+    <div class="hero-content">
+
+      <div class="hero-badge">⭐ Tamil Nadu's #1 Middle Eastern Restaurant</div>
+
+      <h1 class="hero-title">
+
+        A Feast of<br>
+
+        <span>Authentic Flavors</span>
+
+      </h1>
+
+      <p class="hero-desc">Where Middle Eastern traditions meet Tamil Nadu's culinary soul. Experience handcrafted biryanis, wood-fired grills, and authentic shawarma.</p>
+
+      <div class="hero-actions">
+
+        <a href="menu.html" class="btn-primary">🍽️ Order Now</a>
+
+        <a href="reservation.html" class="btn-outline">📅 Reserve Table</a>
+
+      </div>
+
+    </div>
+
+    <div class="hero-scroll">
+
+      <span>Scroll</span>
+
+      <div class="scroll-line"></div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- Stats Bar -->
+
+  <div class="stats-bar">
+
+    <div class="stats-inner">
+
+      <div class="stat-item"><span class="num" data-count="5000">0</span><span class="label">Happy Customers</span></div>
+
+      <div class="stat-item"><span class="num" data-count="50">0</span><span class="label">Menu Items</span></div>
+
+      <div class="stat-item"><span class="num" data-count="8">0</span><span class="label">Years of Excellence</span></div>
+
+      <div class="stat-item"><span class="num" data-count="4.9">0</span><span class="label">Google Rating</span></div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- Popular Dishes -->
+
+  <section id="popular">
+
+    <div class="container">
+
+      <div class="section-header">
+
+        <h2 class="section-title">Most Popular</h2>
+
+        <p class="section-sub">Our guests' all-time favourites, crafted with passion</p>
+
+      </div>
+
+      <div class="food-grid" id="popularGrid">
+
+        <div class="extracted-index-9">
+
+          <div class="spinner extracted-index-10"></div>
+
+          <p class="extracted-index-11">Loading our finest dishes...</p>
+
+        </div>
+
+      </div>
+
+      <div class="extracted-index-12">
+
+        <a href="menu.html" class="btn-primary">View Full Menu →</a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- Special Offers -->
+
+  <section class="extracted-index-13">
+
+    <div class="container">
+
+      <div class="section-header">
+
+        <h2 class="section-title">Special Offers</h2>
+
+        <p class="section-sub">Use these coupon codes to save on your next order</p>
+
+      </div>
+
+      <div class="offers-grid">
+
+        <div class="offer-card">
+
+          <div class="offer-icon">🎉</div>
+
+          <h3 class="offer-title">Welcome Offer</h3>
+
+          <p class="offer-desc">10% off on your first order with us. Welcome to the family!</p>
+
+          <div class="offer-code">WELCOME10</div>
+
+        </div>
+
+        <div class="offer-card">
+
+          <div class="offer-icon">🥗</div>
+
+          <h3 class="offer-title">Location Special</h3>
+
+          <p class="offer-desc">20% off on orders above ₹500. Our signature savings deal!</p>
+
+          <div class="offer-code">LOCATION20</div>
+
+        </div>
+
+        <div class="offer-card">
+
+          <div class="offer-icon">🛵</div>
+
+          <h3 class="offer-title">First Delivery</h3>
+
+          <p class="offer-desc">15% off on your first delivery order. Fast &amp; fresh!</p>
+
+          <div class="offer-code">FIRSTORDER</div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- About Section -->
+
+  <section id="about">
+
+    <div class="container">
+
+      <div class="about-grid">
+
+        <div>
+
+          <div class="hero-badge extracted-index-14">🏆 Est. 2016 - Tamil Nadu</div>
+
+          <h2 class="section-title extracted-index-15">Our Story</h2>
+
+          <p class="extracted-index-16">Born from a passion for authentic Middle Eastern flavours and the rich culinary heritage of Tamil Nadu, Location Multi Cuisine Restaurant has been serving the community since 2016. Our chefs bring decades of experience from across the Middle East and Kerala.</p>
+
+          <p class="extracted-index-17">Every dish is crafted from scratch using the finest spices, freshest ingredients, and time-honoured recipes passed down through generations. We believe food is more than sustenance - it's culture, community, and celebration.</p>
+
+          <div class="extracted-index-18">
+
+            <div class="extracted-index-19">
+
+              <div class="extracted-index-20">100%</div>
+
+              <div class="extracted-index-21">Halal Certified</div>
+
+            </div>
+
+            <div class="extracted-index-22">
+
+              <div class="extracted-index-23">Fresh</div>
+
+              <div class="extracted-index-24">Daily Ingredients</div>
+
+            </div>
+
+          </div>
+
+          <a href="menu.html" class="btn-primary">Explore Our Menu →</a>
+
+        </div>
+
+        <div class="extracted-index-25">
+
+          <div class="extracted-index-26">🫕</div>
+
+          <div class="extracted-index-27">🥘</div>
+
+          <div class="extracted-index-28">🍖</div>
+
+          <div class="extracted-index-29">🥙</div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- Customer Reviews -->
+
+  <section class="extracted-index-30">
+
+    <div class="container">
+
+      <div class="section-header">
+
+        <h2 class="section-title">What Our Guests Say</h2>
+
+        <p class="section-sub">Real reviews from our valued customers</p>
+
+      </div>
+
+      <div class="reviews-grid">
+
+        <div class="review-card">
+
+          <div class="review-stars">★★★★★</div>
+
+          <p class="review-text">"The Malabar Biryani is absolutely divine! Perfectly spiced with the authentic Kerala touch. The portion size is generous and the service was excellent."</p>
+
+          <div class="reviewer">
+
+            <div class="reviewer-avatar">AM</div>
+
+            <div><div class="reviewer-name">Ahmed Mohammed</div><div class="reviewer-date">Google Review · 2 days ago</div></div>
+
+          </div>
+
+        </div>
+
+        <div class="review-card">
+
+          <div class="review-stars">★★★★★</div>
+
+          <p class="review-text">"Best shawarma in Tamil Nadu! The garlic sauce is incredible. We come here every Friday. The mixed grill platter is a must-try for meat lovers!"</p>
+
+          <div class="reviewer">
+
+            <div class="reviewer-avatar">PK</div>
+
+            <div><div class="reviewer-name">Priya Kumar</div><div class="reviewer-date">Google Review · 1 week ago</div></div>
+
+          </div>
+
+        </div>
+
+        <div class="review-card">
+
+          <div class="review-stars">★★★★★</div>
+
+          <p class="review-text">"Ordered online for a family gathering. The delivery was on time and food was piping hot. Mutton biryani was outstanding. Will definitely order again!"</p>
+
+          <div class="reviewer">
+
+            <div class="reviewer-avatar">RS</div>
+
+            <div><div class="reviewer-name">Rahul Sharma</div><div class="reviewer-date">Google Review · 2 weeks ago</div></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- Opening Hours + Contact -->
+
+  <section id="contact">
+
+    <div class="container">
+
+      <div class="section-header">
+
+        <h2 class="section-title">Visit Us</h2>
+
+        <p class="section-sub">We're open all week to serve you the finest cuisine</p>
+
+      </div>
+
+      <div class="visit-grid">
+
+        <!-- Hours -->
+
+        <div>
+
+          <h3 class="extracted-index-31">⏰ Opening Hours</h3>
+
+          <div class="extracted-index-32">
+
+            <div class="extracted-index-33"><span>Mon - Thu</span><span class="extracted-index-34">11:00 AM - 11:00 PM</span></div>
+
+            <div class="extracted-index-35"><span class="extracted-index-36">Fri - Sat</span><span class="extracted-index-37">11:00 AM - 12:30 AM</span></div>
+
+            <div class="extracted-index-38"><span>Sunday</span><span class="extracted-index-39">12:00 PM - 11:00 PM</span></div>
+
+          </div>
+
+        </div>
+
+        <!-- Contact Details -->
+
+        <div class="contact-info">
+
+          <h3 class="extracted-index-40">📞 Contact Us</h3>
+
+          <div class="contact-item">
+
+            <div class="contact-icon">📍</div>
+
+            <div><div class="contact-label">Address</div><div class="contact-value">tmj complex, Thiruvithamcode, Azhagiyamandapam, Tamil Nadu 629167</div></div>
+
+          </div>
+
+          <div class="contact-item">
+
+            <div class="contact-icon">📞</div>
+
+            <div><div class="contact-label">Phone</div><div class="contact-value">+91 93847 83679</div></div>
+
+          </div>
+
+          <div class="contact-item">
+
+            <div class="contact-icon">✉️</div>
+
+            <div><div class="contact-label">Email</div><div class="contact-value">info@locationrestaurant.in</div></div>
+
+          </div>
+
+        </div>
+
+        <!-- Map -->
+
+        <div>
+
+          <h3 class="extracted-index-41">🗺️ Find Us</h3>
+
+          <div class="map-container">
+
+            <iframe title="Google Maps Location" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3949.336440409426!2d77.2916!3d8.2255!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b04f981b7e09961%3A0xb35a0928e8334e36!2sThiruvithamcode%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1700000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- Footer -->
+
+  <footer>
+
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+
+        <div class="brand-name">🍽️ Location Restaurant</div>
+
+        <p>Bringing the authentic taste of Middle Eastern and South Indian cuisine to Tamil Nadu since 2016. Every meal is a journey.</p>
+
+        <div class="social-links">
+
+          <a href="#" class="social-link">📘</a>
+
+          <a href="#" class="social-link">📸</a>
+
+          <a href="#" class="social-link">🐦</a>
+
+          <a href="#" class="social-link">▶️</a>
+
+        </div>
+
+      </div>
+
+      <div class="footer-col">
+
+        <h4>Quick Links</h4>
+
+        <ul>
+
+          <li><a href="index.html">Home</a></li>
+
+          <li><a href="#about">About</a></li>
+
+          <li><a href="menu.html">Menu</a></li>
+
+          <li><a href="reservation.html">Reservations</a></li>
+
+        </ul>
+
+      </div>
+
+      <div class="footer-col">
+
+        <h4>Cuisines</h4>
+
+        <ul>
+
+          <li><a href="menu.html?cat=biryani">Biryani</a></li>
+
+          <li><a href="menu.html?cat=shawarma">Shawarma</a></li>
+
+          <li><a href="menu.html?cat=grills">Grills</a></li>
+
+          <li><a href="menu.html?cat=seafood">Seafood</a></li>
+
+        </ul>
+
+      </div>
+
+      <div class="footer-col">
+
+        <h4>Customer</h4>
+
+        <ul>
+
+          <li><a href="login.html">Login</a></li>
+
+          <li><a href="signup.html">Sign Up</a></li>
+
+          <li><a href="dashboard.html">Dashboard</a></li>
+
+          <li><a href="reservation.html">Book Table</a></li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+
+      <p>© 2024 Location Multi Cuisine Restaurant. All rights reserved.</p>
+
+      <p>Made with ❤️ in Tamil Nadu</p>
+
+    </div>
+
+  </footer>
+
+
+
+  <!-- Toast Container -->
+
+  <div class="toast-container" id="toastContainer"></div>
+
+
+
+  <script src="js/app.js"></script>
+
+</body>
+
+</html>
+

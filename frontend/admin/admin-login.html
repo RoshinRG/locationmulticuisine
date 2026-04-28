@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin Login | Location Restaurant</title>
+
+  <link rel="stylesheet" href="../css/auth.css">
+
+</head>
+
+<body>
+
+  <div class="auth-bg"></div>
+
+  <div class="auth-page">
+
+    <div class="auth-container">
+
+      <a href="../index.html" class="back-home">← Back to Site</a>
+
+      <div class="auth-brand">
+
+        <div class="logo-circle">🔐</div>
+
+        <h1>Admin Panel</h1>
+
+        <p>Location Restaurant Management</p>
+
+      </div>
+
+      <div class="auth-card">
+
+        <h2>Admin Login</h2>
+
+        <p class="sub">Restricted access - authorised personnel only</p>
+
+        <div class="auth-alert" id="authAlert"></div>
+
+        <form id="adminLoginForm">
+
+          <div class="form-group">
+
+            <label>Admin Email</label>
+
+            <div class="input-wrap">
+
+              <span class="input-icon">✉️</span>
+
+              <input type="email" id="email" placeholder="admin@locationrestaurant.com" required>
+
+            </div>
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Password</label>
+
+            <div class="input-wrap">
+
+              <span class="input-icon">🔒</span>
+
+              <input type="password" id="password" placeholder="••••••••" required>
+
+              <button type="button" class="eye-toggle" onclick="document.getElementById('password').type=document.getElementById('password').type==='password'?'text':'password'">👁️</button>
+
+            </div>
+
+          </div>
+
+          <div style="padding: 0.75rem;background:rgba(201,168,76,0.05);border:1px solid var(--border);border-radius:var(--radius);font-size:0.8rem;color:var(--text-muted);margin-bottom:1rem">
+
+            Default: admin@locationrestaurant.com / Admin@1234
+
+          </div>
+
+          <button type="submit" class="btn-auth" id="loginBtn"><span id="btnText">Sign In as Admin</span></button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <script>
+
+    const API = 'http://localhost:5000/api';
+
+    const token = localStorage.getItem('token');
+
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+
+    if (token && user?.role === 'admin') window.location.href = 'admin-dashboard.html';
+
+
+
+    function showAlert(msg, type='error') {
+
+      const el = document.getElementById('authAlert');
+
+      el.textContent = (type==='error'?'⚠️ ':'✅ ') + msg;
+
+      el.className = `auth-alert show ${type}`;
+
+    }
+
+
+
+    document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+
+      e.preventDefault();
+
+      const btn = document.getElementById('loginBtn');
+
+      const btnText = document.getElementById('btnText');
+
+      btn.disabled = true; btnText.innerHTML = '<span class="spinner-sm"></span> Signing in...';
+
+      try {
+
+        const res = await fetch(`${API}/auth/login`, {
+
+          method: 'POST',
+
+          headers: { 'Content-Type': 'application/json' },
+
+          body: JSON.stringify({ email: document.getElementById('email').value, password: document.getElementById('password').value })
+
+        });
+
+        const data = await res.json();
+
+        if (data.success && data.user.role === 'admin') {
+
+          localStorage.setItem('token', data.token);
+
+          localStorage.setItem('user', JSON.stringify(data.user));
+
+          showAlert(data.message, 'success');
+
+          setTimeout(() => { window.location.href = 'admin-dashboard.html'; }, 800);
+
+        } else if (data.success && data.user.role !== 'admin') {
+
+          showAlert('Access denied. Admin account required.');
+
+          btn.disabled = false; btnText.textContent = 'Sign In as Admin';
+
+        } else {
+
+          showAlert(data.message || 'Invalid credentials.');
+
+          btn.disabled = false; btnText.textContent = 'Sign In as Admin';
+
+        }
+
+      } catch {
+
+        showAlert('Server offline. Start backend on port 5000.');
+
+        btn.disabled = false; btnText.textContent = 'Sign In as Admin';
+
+      }
+
+    });
+
+  </script>
+
+</body>
+
+</html>
+

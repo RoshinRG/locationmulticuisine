@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Track Order | Location Restaurant</title>
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    .order-track-hero {
+      background: linear-gradient(rgba(13, 13, 13, .8), rgba(13, 13, 13, .8)), url('images/hero.png') center/cover;
+      padding: 8rem 2rem 4rem;
+      text-align: center
+    }
+
+    .track-container {
+      max-width: 800px;
+      margin: -4rem auto 4rem;
+      padding: 0 1rem;
+      position: relative;
+      z-index: 10
+    }
+
+    .track-card {
+      background: var(--dark-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      box-shadow: var(--shadow)
+    }
+
+    .track-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem
+    }
+
+    .track-id {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--gold)
+    }
+
+    .track-status-pill {
+      padding: .4rem 1rem;
+      border-radius: 50px;
+      font-size: .75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px
+    }
+
+    .track-steps {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin-bottom: 3rem;
+      padding: 0 1rem
+    }
+
+    .track-steps::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--dark-3);
+      z-index: 1
+    }
+
+    .track-progress {
+      position: absolute;
+      top: 15px;
+      left: 0;
+      height: 2px;
+      background: var(--gold);
+      z-index: 2;
+      transition: width 1s ease;
+      width: 0%
+    }
+
+    .step {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .75rem
+    }
+
+    .step-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--dark-3);
+      border: 2px solid var(--dark-3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .9rem;
+      transition: var(--transition)
+    }
+
+    .step.active .step-icon {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--dark);
+      box-shadow: 0 0 15px rgba(201, 168, 76, .4)
+    }
+
+    .step.completed .step-icon {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--dark)
+    }
+
+    .step-label {
+      font-size: .7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600
+    }
+
+    .step.active .step-label {
+      color: var(--gold)
+    }
+
+    .order-details-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem
+    }
+
+    .detail-box {
+      background: rgba(255, 255, 255, .02);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem
+    }
+
+    .detail-box h4 {
+      color: var(--gold);
+      margin-bottom: 1rem;
+      font-size: .9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px
+    }
+
+    .track-items-list {
+      list-style: none
+    }
+
+    .track-item {
+      display: flex;
+      justify-content: space-between;
+      padding: .75rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, .05);
+      font-size: .88rem
+    }
+
+    .track-item:last-child {
+      border: none
+    }
+
+    .track-summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: .4rem 0;
+      font-size: .85rem;
+      color: var(--text-muted)
+    }
+
+    .track-total {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gold)
+    }
+
+    .delivery-info {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start
+    }
+
+    .delivery-info .icon {
+      font-size: 1.5rem
+    }
+
+    .delivery-info .text {
+      font-size: .85rem;
+      line-height: 1.5
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      color: var(--text-muted);
+      font-size: .85rem;
+      margin-bottom: 1rem;
+      transition: var(--transition)
+    }
+
+    .back-btn:hover {
+      color: var(--gold)
+    }
+
+    @media(max-width:768px) {
+
+      .order-details-grid {
+        grid-template-columns: 1fr
+      }
+
+      .track-steps {
+        padding: 0
+      }
+
+      .step-label {
+        font-size: .6rem;
+        display: none
+      }
+
+      .step.active .step-label {
+        display: block;
+        position: absolute;
+        top: 40px;
+        width: 100px;
+        text-align: center
+      }
+
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+
+    <a href="index.html" class="nav-logo">
+
+      <div class="extracted-order-0">🍽️</div>
+
+      <div class="nav-logo-text"><span class="brand">Location Restaurant</span><span class="tagline">Middle Eastern
+          &amp; Tamil Cuisine</span></div>
+
+    </a>
+
+    <div class="nav-links" id="navLinks">
+
+      <a href="index.html">Home</a>
+
+      <a href="menu.html">Menu</a>
+
+      <a href="reservation.html">Reservation</a>
+
+      <a href="dashboard.html" class="active">My Account</a>
+
+    </div>
+
+    <div class="nav-auth">
+
+      <div id="userMenu">
+
+        <button type="button" onclick="window.location.href='dashboard.html'" class="extracted-order-1">
+
+          <span>👤</span><span id="userName">Dashboard</span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </nav>
+
+
+
+  <div class="order-track-hero">
+
+    <h1 class="section-title">Track Your Order</h1>
+
+    <p class="section-sub">Real-time updates on your delicious feast</p>
+
+  </div>
+
+
+
+  <div class="track-container">
+
+    <a href="dashboard.html" class="back-btn">← Back to Dashboard</a>
+
+    <div class="track-card" id="trackCard">
+
+      <div class="extracted-order-2">
+
+        <div class="spinner extracted-order-3"></div>
+
+        <p>Fetching order details...</p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <footer class="extracted-order-4">
+
+    <div class="footer-bottom extracted-order-5">
+
+      <p>© 2024 Location Multi Cuisine Restaurant</p>
+
+      <p>Need help? Call +91 93847 83679</p>
+
+    </div>
+
+  </footer>
+
+
+
+  <script src="js/app.js"></script>
+
+  <script>
+
+    async function initTrack() {
+
+      const params = new URLSearchParams(window.location.search);
+
+      const orderId = params.get('id');
+
+      if (!orderId) { window.location.href = 'dashboard.html'; return; }
+
+
+
+      try {
+
+        const res = await authFetch(`${API_BASE}/orders/${orderId}`);
+
+        const data = await res.json();
+
+        if (!data.success) {
+
+          document.getElementById('trackCard').innerHTML = `<div class="extracted-order-6"><div class="extracted-order-7">❌</div><h3>Order Not Found</h3><p class="extracted-order-8">The order you are looking for doesn't exist or you don't have permission to view it.</p><a href="dashboard.html" class="btn-primary extracted-order-9">Back to Dashboard</a></div>`;
+
+          return;
+
+        }
+
+        renderOrder(data.order);
+
+      } catch (err) {
+
+        showToast('Failed to load order', 'error');
+
+      }
+
+    }
+
+
+
+    function renderOrder(o) {
+
+      const statusPill = (s) => {
+
+        const colors = { pending: '#ff9800', accepted: '#2196f3', preparing: '#ce93d8', dispatched: '#4db6ac', delivered: '#4caf50', cancelled: '#e53935' };
+
+        return `<span class="track-status-pill extracted-order-10">${s}</span>`;
+
+      };
+
+
+
+      const steps = ['pending', 'accepted', 'preparing', 'dispatched', 'delivered'];
+
+      const currentIdx = steps.indexOf(o.status);
+
+      const progressWidth = currentIdx === -1 ? 0 : (currentIdx / (steps.length - 1)) * 100;
+
+
+
+      const card = document.getElementById('trackCard');
+
+      card.innerHTML = `
+
+        <div class="track-header">
+
+          <div>
+
+            <div class="track-id">${o.orderNumber}</div>
+
+            <div class="extracted-order-11">Placed on ${fmtDate(o.createdAt)} at ${new Date(o.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+
+          </div>
+
+          ${statusPill(o.status)}
+
+        </div>
+
+
+
+        <div class="track-steps">
+
+          <div class="track-progress extracted-order-12"></div>
+
+          <div class="step ${currentIdx >= 0 ? (currentIdx === 0 ? 'active' : 'completed') : ''}">
+
+            <div class="step-icon">${currentIdx > 0 ? '✓' : '📝'}</div>
+
+            <span class="step-label">Pending</span>
+
+          </div>
+
+          <div class="step ${currentIdx >= 1 ? (currentIdx === 1 ? 'active' : 'completed') : ''}">
+
+            <div class="step-icon">${currentIdx > 1 ? '✓' : '✅'}</div>
+
+            <span class="step-label">Accepted</span>
+
+          </div>
+
+          <div class="step ${currentIdx >= 2 ? (currentIdx === 2 ? 'active' : 'completed') : ''}">
+
+            <div class="step-icon">${currentIdx > 2 ? '✓' : '🍳'}</div>
+
+            <span class="step-label">Preparing</span>
+
+          </div>
+
+          <div class="step ${currentIdx >= 3 ? (currentIdx === 3 ? 'active' : 'completed') : ''}">
+
+            <div class="step-icon">${currentIdx > 3 ? '✓' : '🛵'}</div>
+
+            <span class="step-label">On Way</span>
+
+          </div>
+
+          <div class="step ${currentIdx >= 4 ? (currentIdx === 4 ? 'active' : 'completed') : ''}">
+
+            <div class="step-icon">${currentIdx === 4 ? '✓' : '🎁'}</div>
+
+            <span class="step-label">Delivered</span>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="extracted-order-13">
+
+          <div class="extracted-order-14">
+
+            ${o.status === 'pending' ? 'Order received. Waiting for restaurant to accept.' :
+
+          o.status === 'accepted' ? 'Restaurant has accepted your order!' :
+
+            o.status === 'preparing' ? 'Chef is preparing your delicious meal.' :
+
+              o.status === 'dispatched' ? 'Order is out for delivery! 🛵' :
+
+                o.status === 'delivered' ? 'Order delivered! Enjoy your meal. 🍽️' :
+
+                  o.status === 'cancelled' ? 'This order was cancelled.' : ''}
+
+          </div>
+
+          <div class="extracted-order-15">
+
+            ${o.status === 'delivered' ? 'Thank you for choosing Location Restaurant.' : 'Estimated arrival: 30-45 mins'}
+
+          </div>
+
+        </div>
+
+
+
+        <div class="order-details-grid">
+
+          <div class="detail-box">
+
+            <h4>Items Ordered</h4>
+
+            <ul class="track-items-list">
+
+              ${o.items.map(i => `<li class="track-item"><span><strong>${i.quantity}x</strong> ${i.name}</span><span>₹${i.subtotal}</span></li>`).join('')}
+
+            </ul>
+
+            <div class="extracted-order-16">
+
+              <div class="track-summary-row"><span>Subtotal</span><span>₹${o.subtotal.toFixed(2)}</span></div>
+
+              <div class="track-summary-row"><span>GST (5%)</span><span>₹${o.tax.toFixed(2)}</span></div>
+
+              <div class="track-summary-row"><span>Delivery Fee</span><span>₹${o.deliveryCharge}</span></div>
+
+              ${o.discount ? `<div class="track-summary-row"><span>Discount</span><span class="extracted-order-17">-₹${o.discount.toFixed(2)}</span></div>` : ''}
+
+              <div class="track-total"><span>Total Amount</span><span>₹${o.totalAmount.toFixed(2)}</span></div>
+
+            </div>
+
+          </div>
+
+          <div class="detail-box">
+
+            <h4>Delivery Info</h4>
+
+            <div class="delivery-info">
+
+              <div class="icon">📍</div>
+
+              <div class="text">
+
+                <strong>Address</strong><br>
+
+                ${o.deliveryAddress?.street ? `${o.deliveryAddress.street},<br>${o.deliveryAddress.city} ${o.deliveryAddress.pincode}` : 'Dine-in / Takeaway'}
+
+              </div>
+
+            </div>
+
+            <div class="delivery-info">
+
+              <div class="icon">💳</div>
+
+              <div class="text">
+
+                <strong>Payment</strong><br>
+
+                ${o.paymentMethod.toUpperCase()} - ${o.paymentStatus.toUpperCase()}
+
+              </div>
+
+            </div>
+
+            ${o.notes ? `
+
+              <div class="delivery-info">
+
+                <div class="icon">📝</div>
+
+                <div class="text"><strong>Notes</strong><br>${o.notes}</div>
+
+              </div>` : ''}
+
+          </div>
+
+        </div>
+
+      `;
+
+    }
+
+
+
+    document.addEventListener('DOMContentLoaded', initTrack);
+
+  </script>
+
+</body>
+
+</html>

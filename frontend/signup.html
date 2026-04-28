@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up | Location Restaurant</title>
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+  <div class="auth-bg"></div>
+  <div class="auth-page">
+    <div class="auth-container admin-max-w-540">
+      <a href="index.html" class="back-home">← Back to Home</a>
+      <div class="auth-brand">
+        <div class="logo-circle">🍽️</div>
+        <h1>Location Restaurant</h1>
+        <p>Create Your Account</p>
+      </div>
+      <div class="auth-card">
+        <h2>Join Us Today</h2>
+        <p class="sub">Create a free account and start ordering</p>
+        <div class="auth-alert" id="authAlert"></div>
+        <form id="signupForm" novalidate>
+          <div class="form-group">
+            <label>Register as</label>
+            <div class="role-selector">
+              <label class="role-option">
+                <input type="radio" name="role" value="customer" checked onclick="toggleAdminField(false)">
+                <span class="role-card">
+                  <span class="role-icon">👤</span>
+                  <span class="role-name">Customer</span>
+                </span>
+              </label>
+              <label class="role-option">
+                <input type="radio" name="role" value="admin" onclick="toggleAdminField(true)">
+                <span class="role-card">
+                  <span class="role-icon">🔑</span>
+                  <span class="role-name">Admin</span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group admin-d-none" id="adminSecretGroup">
+            <label for="adminSecret">Admin Secret Code</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔐</span>
+              <input type="password" id="adminSecret" placeholder="Enter Staff or Owner code" autocomplete="new-password">
+            </div>
+            <div class="field-error" id="adminSecretError"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <div class="input-wrap">
+                <span class="input-icon">👤</span>
+                <input type="text" id="name" placeholder="Your Name" required>
+              </div>
+              <div class="field-error" id="nameError"></div>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <div class="input-wrap">
+                <span class="input-icon">📞</span>
+                <input type="tel" id="phone" placeholder="10-digit mobile" required>
+              </div>
+              <div class="field-error" id="phoneError"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <div class="input-wrap">
+              <span class="input-icon">✉️</span>
+              <input type="email" id="email" placeholder="your@email.com" required>
+            </div>
+            <div class="field-error" id="emailError"></div>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔒</span>
+              <input type="password" id="password" placeholder="Min 8 characters" oninput="checkStrength(this.value)" autocomplete="new-password">
+              <button type="button" class="eye-toggle" onclick="togglePwd('password')">👁️</button>
+            </div>
+            <div class="strength-meter"><div class="strength-fill" id="strengthFill"></div></div>
+            <div class="strength-label" id="strengthLabel"></div>
+            <div class="field-error" id="passwordError"></div>
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔒</span>
+              <input type="password" id="confirmPassword" placeholder="Repeat password" autocomplete="new-password">
+              <button type="button" class="eye-toggle" onclick="togglePwd('confirmPassword')">👁️</button>
+            </div>
+            <div class="field-error" id="confirmError"></div>
+          </div>
+          <label class="checkbox-wrap">
+            <input type="checkbox" id="terms" required>
+            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+          </label>
+          <button type="submit" class="btn-auth" id="signupBtn">
+            <span id="signupBtnText">Create Account</span>
+          </button>
+        </form>
+        <div class="auth-footer">Already have an account? <a href="login.html">Sign in</a></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      ? `http://${window.location.hostname}:5000/api`
+      : `${window.location.origin}/api`;
+
+    function togglePwd(id) {
+      const inp = document.getElementById(id);
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+    }
+
+    function toggleAdminField(show) {
+      const field = document.getElementById('adminSecretGroup');
+      field.style.display = show ? 'block' : 'none';
+      if (!show) document.getElementById('adminSecret').value = '';
+    }
+
+    function checkStrength(val) {
+      const fill = document.getElementById('strengthFill');
+      const label = document.getElementById('strengthLabel');
+      let score = 0;
+      if (val.length >= 8) score++;
+      if (/[A-Z]/.test(val)) score++;
+      if (/[0-9]/.test(val)) score++;
+      if (/[^A-Za-z0-9]/.test(val)) score++;
+      const colors = ['','#e53935','#ff9800','#4caf50','#2196f3'];
+      const labels = ['','Weak','Fair','Strong','Very Strong'];
+      fill.style.width = (score * 25) + '%';
+      fill.style.background = colors[score] || '';
+      label.textContent = val.length ? labels[score] : '';
+    }
+
+    function showAlert(msg, type = 'error') {
+      const el = document.getElementById('authAlert');
+      el.textContent = (type === 'error' ? '⚠️ ' : '✅ ') + msg;
+      el.className = `auth-alert show ${type}`;
+    }
+
+    function validate() {
+      let ok = true;
+      const clear = id => document.getElementById(id).textContent = '';
+      const err = (id, msg) => { document.getElementById(id).textContent = msg; ok = false; };
+      ['nameError','phoneError','emailError','passwordError','confirmError', 'adminSecretError'].forEach(clear);
+
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const pwd = document.getElementById('password').value;
+      const cpwd = document.getElementById('confirmPassword').value;
+      const role = document.querySelector('input[name="role"]:checked').value;
+      const secret = document.getElementById('adminSecret').value.trim();
+
+      if (name.length < 2) err('nameError', 'Name must be at least 2 characters');
+      if (!/^[6-9]\d{9}$/.test(phone)) err('phoneError', 'Enter valid 10-digit Indian phone number');
+      if (!/^\S+@\S+\.\S+$/.test(email)) err('emailError', 'Enter a valid email address');
+      if (pwd.length < 8) err('passwordError', 'Password must be at least 8 characters');
+      if (pwd !== cpwd) err('confirmError', 'Passwords do not match');
+      if (role === 'admin' && !secret) err('adminSecretError', 'Secret code is required for Admin registration');
+      if (!document.getElementById('terms').checked) { showAlert('Please accept the Terms of Service'); ok = false; }
+      return ok;
+    }
+
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!validate()) return;
+      const btn = document.getElementById('signupBtn');
+      const btnText = document.getElementById('signupBtnText');
+      btn.disabled = true;
+      btnText.innerHTML = '<span class="spinner-sm"></span> Creating account...';
+
+      try {
+        const res = await fetch(`${API}/auth/signup`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: document.getElementById('name').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            password: document.getElementById('password').value,
+            role: document.querySelector('input[name="role"]:checked').value,
+            adminSecret: document.getElementById('adminSecret').value.trim()
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('user', JSON.stringify(data.user));
+          showAlert(data.message, 'success');
+          setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
+        } else {
+          showAlert(data.message || 'Registration failed.');
+          btn.disabled = false;
+          btnText.textContent = 'Create Account';
+        }
+      } catch {
+        showAlert('Server offline. Ensure backend is running on port 5000.');
+        btn.disabled = false;
+        btnText.textContent = 'Create Account';
+      }
+    });
+  </script>
+</body>
+</html>

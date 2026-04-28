@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Login | Location Restaurant</title>
+
+  <meta name="description" content="Login to your Location Restaurant account to track orders and manage reservations.">
+
+  <link rel="stylesheet" href="css/auth.css">
+
+</head>
+
+<body>
+
+  <div class="auth-bg"></div>
+
+
+
+  <div class="auth-page">
+
+    <div class="auth-container">
+
+      <a href="index.html" class="back-home">← Back to Home</a>
+
+
+
+      <div class="auth-brand">
+
+        <div class="logo-circle">🍽️</div>
+
+        <h1>Location Restaurant</h1>
+
+        <p>Middle Eastern &amp; Tamil Cuisine</p>
+
+      </div>
+
+
+
+      <div class="auth-card">
+
+        <h2>Welcome Back</h2>
+
+        <p class="sub">Sign in to your account to continue</p>
+
+
+
+        <div class="auth-alert" id="authAlert"></div>
+
+
+
+        <form id="loginForm" novalidate>
+
+          <div class="form-group">
+
+            <label>Sign in as</label>
+
+            <div class="role-selector">
+
+              <label class="role-option">
+
+                <input type="radio" name="role" value="customer" checked>
+
+                <span class="role-card">
+
+                  <span class="role-icon">👤</span>
+
+                  <span class="role-name">Customer</span>
+
+                </span>
+
+              </label>
+
+              <label class="role-option">
+
+                <input type="radio" name="role" value="admin">
+
+                <span class="role-card">
+
+                  <span class="role-icon">🔑</span>
+
+                  <span class="role-name">Admin</span>
+
+                </span>
+
+              </label>
+
+            </div>
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="email">Email Address</label>
+
+            <div class="input-wrap">
+
+              <span class="input-icon">✉️</span>
+
+              <input type="email" id="email" name="email" placeholder="your@email.com" autocomplete="email" required>
+
+            </div>
+
+            <div class="field-error" id="emailError"></div>
+
+          </div>
+
+
+
+          <div class="form-group">
+
+            <label for="password">Password</label>
+
+            <div class="input-wrap">
+
+              <span class="input-icon">🔒</span>
+
+              <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required>
+
+              <button type="button" class="eye-toggle" onclick="togglePwd('password','eyeIcon')" id="eyeIcon">👁️</button>
+
+            </div>
+
+            <div class="field-error" id="passwordError"></div>
+
+          </div>
+
+
+
+          <div class="flex-between">
+
+            <label class="checkbox-wrap extracted-login-0">
+
+              <input type="checkbox" id="rememberMe"> Remember me
+
+            </label>
+
+            <a href="#" class="fs-sm extracted-login-1">Forgot password?</a>
+
+          </div>
+
+
+
+          <button type="submit" class="btn-auth" id="loginBtn">
+
+            <span id="loginBtnText">Sign In</span>
+
+          </button>
+
+        </form>
+
+
+
+        <div class="divider">or</div>
+
+
+
+        <div class="demo-box">
+
+          <strong>Demo Accounts:</strong><br>
+
+          Admin: admin@locationrestaurant.com / Admin@1234<br>
+
+          Customer: customer@example.com / Customer@123
+
+        </div>
+
+
+
+        <div class="auth-footer">
+
+          Don't have an account? <a href="signup.html">Create one free</a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <script>
+
+    const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+
+      ? `http://${window.location.hostname}:5000/api`
+
+      : `${window.location.origin}/api`;
+
+
+
+    // Redirect if already logged in
+
+    const token = localStorage.getItem('token');
+
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+
+    if (token && user) {
+
+      window.location.href = user.role === 'admin' ? 'admin/admin-dashboard.html' : 'dashboard.html';
+
+    }
+
+
+
+    function togglePwd(inputId, iconId) {
+
+      const inp = document.getElementById(inputId);
+
+      const icon = document.getElementById(iconId);
+
+      if (inp.type === 'password') {
+
+        inp.type = 'text';
+
+        if (icon) icon.textContent = '🔒';
+
+      } else {
+
+        inp.type = 'password';
+
+        if (icon) icon.textContent = '👁️';
+
+      }
+
+    }
+
+
+
+    function showAlert(msg, type = 'error') {
+
+      const el = document.getElementById('authAlert');
+
+      el.textContent = (type === 'error' ? '⚠️ ' : '✅ ') + msg;
+
+      el.className = `auth-alert show ${type}`;
+
+    }
+
+
+
+    function hideAlert() {
+
+      document.getElementById('authAlert').className = 'auth-alert';
+
+    }
+
+
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+
+      e.preventDefault();
+
+      hideAlert();
+
+      const btn = document.getElementById('loginBtn');
+
+      const btnText = document.getElementById('loginBtnText');
+
+      const email = document.getElementById('email').value.trim();
+
+      const password = document.getElementById('password').value;
+
+
+
+      // Client-side validation
+
+      if (!email) { document.getElementById('emailError').textContent = 'Email is required'; return; }
+
+      if (!password) { document.getElementById('passwordError').textContent = 'Password is required'; return; }
+
+      document.getElementById('emailError').textContent = '';
+
+      document.getElementById('passwordError').textContent = '';
+
+
+
+      btn.disabled = true;
+
+      btnText.innerHTML = '<span class="spinner-sm"></span> Signing in...';
+
+
+
+      try {
+
+        const res = await fetch(`${API}/auth/login`, {
+
+          method: 'POST',
+
+          headers: { 'Content-Type': 'application/json' },
+
+          body: JSON.stringify({ email, password })
+
+        });
+
+        const data = await res.json();
+
+
+
+        if (data.success) {
+
+          localStorage.setItem('token', data.token);
+
+          localStorage.setItem('user', JSON.stringify(data.user));
+
+          showAlert(data.message, 'success');
+
+          
+
+          const selectedRole = document.querySelector('input[name="role"]:checked').value;
+
+          
+
+          // Verify if actual role matches selected role (optional but good for UX)
+
+          if (data.user.role !== selectedRole) {
+
+            showAlert(`Note: You are logged in as a ${data.user.role}`, 'success');
+
+          }
+
+
+
+          setTimeout(() => {
+
+            window.location.href = data.user.role === 'admin' ? 'admin/admin-dashboard.html' : 'dashboard.html';
+
+          }, 800);
+
+        } else {
+
+          showAlert(data.message || 'Login failed. Please try again.');
+
+          btn.disabled = false;
+
+          btnText.textContent = 'Sign In';
+
+        }
+
+      } catch {
+
+        showAlert('Server offline. Ensure backend is running on port 5000.');
+
+        btn.disabled = false;
+
+        btnText.textContent = 'Sign In';
+
+      }
+
+    });
+
+  </script>
+
+</body>
+
+</html>
+
